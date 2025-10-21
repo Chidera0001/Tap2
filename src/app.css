@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles for Tap2 brand consistency */
+body {
+  @apply bg-gray-50 text-black;
+}
+
+/* Custom utility classes */
+.btn-primary {
+  @apply bg-tap2-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md;
+}
+
+.card {
+  @apply bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300;
+}
+
+.card-gradient {
+  @apply bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300;
+}
+
+.stat-card {
+  @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100;
+}
+
+.stat-card-gradient {
+  @apply bg-gradient-to-br from-white via-blue-50/30 to-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100/50;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient-warning {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
