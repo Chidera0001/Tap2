@@ -58,7 +58,7 @@
   <!-- Card Content -->
   <div class="p-6">
     <!-- Location and Date -->
-    <div class="flex items-center text-gray-600 mb-4 space-x-4">
+    <div class="flex flex-col sm:flex-row sm:items-center text-gray-600 mb-4 space-y-2 sm:space-y-0 sm:space-x-4">
       <div class="flex items-center">
         <MapPin class="w-4 h-4 mr-1" />
         <span class="text-sm">{card.location}</span>

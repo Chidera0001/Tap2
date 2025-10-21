@@ -1,6 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import Header from '$lib/components/Header.svelte';
+  import LoyaltyCard from '$lib/components/LoyaltyCard.svelte';
+  import { convex } from '$lib/convex';
+  import { api } from '$lib/convex-generated/api';
   
   // Form data
   let formData = {
@@ -47,11 +50,14 @@
     if (!validateForm()) return;
     
     try {
-      // Mock submission - in real app this would use Convex mutation
-      console.log('Creating loyalty card:', formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await convex.mutation(api.loyaltyCards.create, {
+        businessName: formData.businessName,
+        location: formData.location,
+        activeCards: 0,
+        redemptions: 0,
+        rewardThreshold: formData.rewardThreshold,
+        color: formData.color
+      });
       
       // Redirect to dashboard
       goto('/');
@@ -63,10 +69,14 @@
   
   // Preview card
   $: previewCard = {
+    _id: 'preview',
     businessName: formData.businessName || 'Your Business',
     location: formData.location || 'Your Location',
+    activeCards: 0,
+    redemptions: 0,
     rewardThreshold: formData.rewardThreshold,
-    color: formData.color
+    color: formData.color,
+    createdAt: Date.now()
   };
 </script>
 
@@ -91,7 +101,7 @@
     <p class="text-gray-600">Set up a new digital loyalty card program for your business</p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-[10rem]">
     <!-- Form -->
     <div class="space-y-6">
       <form on:submit|preventDefault={handleSubmit} class="space-y-6">
@@ -203,9 +213,9 @@
     </div>
 
     <!-- Preview -->
-    <div class="space-y-6">
+    <div class="space-y-6 -mt-[0.5rem]">
       <div>
-        <h3 class="text-lg font-semibold text-black mb-4">Preview</h3>
+        <h3 class=" text-sm font-medium text-gray-700 mb-2">Preview</h3>
         
         <!-- Card Preview -->
         <div class="card p-6 mb-6">

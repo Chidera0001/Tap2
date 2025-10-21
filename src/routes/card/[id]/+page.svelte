@@ -3,24 +3,31 @@
   import { onMount } from 'svelte';
   import Header from '$lib/components/Header.svelte';
   import StatCard from '$lib/components/StatCard.svelte';
+  import { convex } from '$lib/convex';
+  import { api } from '$lib/convex-generated/api';
   
   // Get card ID from URL params
   $: cardId = $page.params.id;
   
-  // Mock data for demo - replace with Convex query when working
-  let card = {
-    _id: cardId,
-    businessName: 'Café Amsterdam',
-    location: 'Amsterdam, Netherlands',
-    activeCards: 234,
-    redemptions: 89,
-    rewardThreshold: 10,
-    color: '#0055FF',
-    createdAt: Date.now() - 86400000 * 30
-  };
+  // State
+  let card: any = null;
+  let isLoading = true;
+  let hasError = false;
   
-  // Loading state
-  $: isLoading = false;
+  // Load card data on mount
+  onMount(async () => {
+    if (cardId) {
+      try {
+        const cardData = await convex.query(api.loyaltyCards.get, { id: cardId });
+        card = cardData;
+        isLoading = false;
+      } catch (error) {
+        console.error('Error loading card:', error);
+        hasError = true;
+        isLoading = false;
+      }
+    }
+  });
   
   // Calculate metrics
   $: engagementRate = card && card.activeCards > 0 
@@ -31,7 +38,7 @@
     : 0;
   $: createdDate = card ? new Date(card.createdAt).toLocaleDateString() : '';
   
-  // Mock recent activity
+  // Mock recent activity (this would come from a separate Convex table in production)
   let recentActivity = [
     { type: 'redemption', message: 'Customer redeemed free coffee', time: '2 hours ago' },
     { type: 'new_card', message: 'New loyalty card created', time: '4 hours ago' },
@@ -109,9 +116,9 @@
         <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
           Edit Program
         </button>
-        <button class="btn-primary">
+        <a href="/analytics" class="btn-primary">
           View Analytics
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -121,28 +128,24 @@
     <StatCard 
       title="Active Cards" 
       value={card.activeCards.toLocaleString()} 
-      icon="💳"
       trend="up"
       trendValue="+5 this week"
     />
     <StatCard 
       title="Total Redemptions" 
       value={card.redemptions.toLocaleString()} 
-      icon="🎁"
       trend="up"
       trendValue="+3 this week"
     />
     <StatCard 
       title="Engagement Rate" 
       value="{engagementRate}%" 
-      icon="📊"
       trend="up"
       trendValue="+2% this week"
     />
     <StatCard 
       title="Avg per Card" 
       value="{avgRedemptionsPerCard}" 
-      icon="⭐"
       trend="neutral"
     />
   </div>

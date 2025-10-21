@@ -1,6 +1,5 @@
-import { ConvexProvider, ConvexReactClient } from "convex/react";
-import { BrowserRouter } from "react-router-dom";
+import { ConvexHttpClient } from "convex/browser";
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
-
-export default convex;
+export const convex = new ConvexHttpClient(
+  "https://formal-penguin-443.convex.cloud"
+);

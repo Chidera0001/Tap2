@@ -8,9 +8,9 @@
  * @module
  */
 
+import type * as loyaltyCards from "../loyaltyCards.js";
 import type * as activities from "../activities.js";
 import type * as insights from "../insights.js";
-import type * as loyaltyCards from "../loyaltyCards.js";
 
 import type {
   ApiFromModules,
@@ -27,9 +27,9 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  loyaltyCards: typeof loyaltyCards;
   activities: typeof activities;
   insights: typeof insights;
-  loyaltyCards: typeof loyaltyCards;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

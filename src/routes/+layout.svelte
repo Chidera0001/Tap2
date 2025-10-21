@@ -1,8 +1,7 @@
 <script lang="ts">
   import '../app.css';
-  import type { LayoutLoad } from './$types';
   
-  export const load: LayoutLoad = async () => {
+  export const load = async () => {
     return {};
   };
 </script>
