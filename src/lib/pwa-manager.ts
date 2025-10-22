@@ -131,9 +131,11 @@ export class PWANotificationManager {
   }
 
   private showNotification() {
+    console.log("PWA Manager: showNotification called");
     this.notificationShown = true;
     // Dispatch custom event for components to listen to
     if (typeof window !== "undefined") {
+      console.log("PWA Manager: Dispatching pwa-notification-show event");
       window.dispatchEvent(new CustomEvent("pwa-notification-show"));
     }
   }
@@ -153,8 +155,10 @@ export class PWANotificationManager {
 
   public async installPWA(): Promise<boolean> {
     if (this.installPrompt) {
+      console.log("PWA Manager: Calling installPrompt.prompt()");
       this.installPrompt.prompt();
       const { outcome } = await this.installPrompt.userChoice;
+      console.log("PWA Manager: Install outcome:", outcome);
 
       if (outcome === "accepted") {
         this.canInstall = false;
@@ -165,6 +169,7 @@ export class PWANotificationManager {
         return false;
       }
     } else {
+      console.log("PWA Manager: No install prompt available");
       return false;
     }
   }
