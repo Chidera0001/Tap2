@@ -121,8 +121,13 @@ export class PWANotificationManager {
     console.log("- Is Mobile:", isMobile);
     console.log("- Is Standalone:", isInStandaloneMode);
 
-    // Note: We're relying on beforeinstallprompt for all devices now
-    // No custom instructions - let the browser handle it
+    // For iOS, show instructions since beforeinstallprompt is not supported
+    if (isIOS && !isInStandaloneMode && !this.notificationDismissed) {
+      console.log("PWA Manager: iOS detected, showing install instructions");
+      setTimeout(() => {
+        this.showIOSInstructions();
+      }, 2000); // Show after 2 seconds on iOS
+    }
   }
 
   private showNotification() {
@@ -177,11 +182,15 @@ export class PWANotificationManager {
   }
 
   public resetNotification() {
+    this.notificationDismissed = false;
+    this.notificationShown = false;
+
     // Only use localStorage in browser environment
     if (typeof localStorage !== "undefined") {
       localStorage.removeItem("pwa-notification-dismissed");
     }
-    this.notificationDismissed = false;
+
+    console.log("PWA Manager: Notification reset - will show again");
   }
 
   // Getters
