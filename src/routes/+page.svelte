@@ -7,6 +7,10 @@
   import { convex } from '$lib/convex';
   import { api } from '$lib/convex-generated/api';
   
+  // Accept SvelteKit props to prevent warnings
+  export let params: any;
+  export let data: any;
+  
   // State
   let loyaltyCards: any[] = [];
   let isLoading = true;
@@ -133,12 +137,12 @@
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-3 sm:space-y-0">
       <h2 class="text-xl font-semibold text-black">Loyalty Programs</h2>
       <div class="flex space-x-3">
-        <button 
+        <!-- <button 
           on:click={handleSeedData}
           class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
         >
           Add Demo Data
-        </button>
+        </button> -->
         <a 
           href="/create" 
           class="btn-primary text-sm w-full sm:w-auto text-center"
@@ -197,12 +201,12 @@
           <a href="/create" class="btn-primary">
             Create Your First Program
           </a>
-          <button 
+          <!-- <button 
             on:click={handleSeedData}
             class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
             Add Demo Data
-          </button>
+          </button> -->
         </div>
       </div>
     {:else}

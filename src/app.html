@@ -1,12 +1,35 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/logo/Tap2.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="Tap2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Tap2" />
+    <meta
+      name="description"
+      content="A comprehensive loyalty card management and analytics dashboard"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="theme-color" content="#3b82f6" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="%sveltekit.assets%/logo/Logo-tap.png" />
+
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
 </html>
