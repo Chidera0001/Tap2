@@ -69,6 +69,24 @@ export class PWANotificationManager {
 
     // Check for iOS Safari (different install flow)
     this.checkIOSInstallability();
+
+    // Add additional debugging
+    console.log("PWA Manager: Notification dismissed:", this.notificationDismissed);
+    console.log("PWA Manager: Can install:", this.canInstall);
+    console.log("PWA Manager: Install prompt available:", !!this.installPrompt);
+
+    // Check if we're in a PWA-capable environment
+    if ('serviceWorker' in navigator) {
+      console.log("PWA Manager: Service Worker supported");
+    } else {
+      console.log("PWA Manager: Service Worker NOT supported");
+    }
+
+    if ('beforeinstallprompt' in window) {
+      console.log("PWA Manager: beforeinstallprompt event supported");
+    } else {
+      console.log("PWA Manager: beforeinstallprompt event NOT supported");
+    }
   }
 
   private checkIfInstalled(): boolean {
