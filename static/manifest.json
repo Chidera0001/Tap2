@@ -11,13 +11,25 @@
   "icons": [
     {
       "src": "/logo/Logo-tap.png",
-      "sizes": "any",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo/Logo-tap.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo/Tap2.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/logo/Logo-tap.png",
-      "sizes": "any",
+      "src": "/logo/Tap2.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     }

@@ -21,8 +21,11 @@ export class PWANotificationManager {
   private initialize() {
     // Only initialize in browser environment
     if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      console.log("PWA Manager: Not in browser environment");
       return;
     }
+
+    console.log("PWA Manager: Initializing...");
 
     // Check if notification was previously dismissed
     this.notificationDismissed =
@@ -30,22 +33,28 @@ export class PWANotificationManager {
 
     // Check if app is already installed as PWA
     this.isInstalled = this.checkIfInstalled();
+    console.log("PWA Manager: Is installed:", this.isInstalled);
 
     if (this.isInstalled) {
+      console.log("PWA Manager: Already installed, skipping notification");
       return; // Don't show notification if already installed
     }
 
     // Listen for install prompt
     window.addEventListener("beforeinstallprompt", (e) => {
+      console.log("PWA Manager: beforeinstallprompt event received");
       e.preventDefault();
       this.installPrompt = e;
       this.canInstall = true;
 
       // Show notification after a delay if not dismissed
       if (!this.notificationDismissed) {
+        console.log("PWA Manager: Will show notification in 3 seconds");
         setTimeout(() => {
           this.showNotification();
         }, 3000); // Show after 3 seconds
+      } else {
+        console.log("PWA Manager: Notification was previously dismissed");
       }
     });
 
