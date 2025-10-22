@@ -109,15 +109,40 @@ export class PWANotificationManager {
       return;
     }
 
-    // For iOS Safari, we can't use beforeinstallprompt
-    // Instead, we show a custom instruction
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    // Enhanced mobile detection
+    const userAgent = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+    const isAndroid = /Android/.test(userAgent);
+    const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
     const isInStandaloneMode = (window.navigator as any).standalone === true;
 
+    console.log("PWA Manager: Mobile Detection:");
+    console.log("- User Agent:", userAgent);
+    console.log("- Is iOS:", isIOS);
+    console.log("- Is Android:", isAndroid);
+    console.log("- Is Mobile:", isMobile);
+    console.log("- Is Standalone:", isInStandaloneMode);
+
+    // For iOS Safari, we can't use beforeinstallprompt
+    // Instead, we show a custom instruction
     if (isIOS && !isInStandaloneMode && !this.notificationDismissed) {
+      console.log("PWA Manager: Will show iOS instructions in 5 seconds");
       setTimeout(() => {
         this.showIOSInstructions();
       }, 5000); // Show after 5 seconds on iOS
+    }
+
+    // For Android Chrome, check if beforeinstallprompt is supported
+    if (isAndroid && !isInStandaloneMode) {
+      console.log("PWA Manager: Android detected, waiting for beforeinstallprompt");
+      
+      // Fallback: If no beforeinstallprompt after 10 seconds, show manual instructions
+      setTimeout(() => {
+        if (!this.canInstall && !this.notificationDismissed) {
+          console.log("PWA Manager: No beforeinstallprompt received, showing Android instructions");
+          this.showAndroidInstructions();
+        }
+      }, 10000);
     }
   }
 
@@ -139,6 +164,12 @@ export class PWANotificationManager {
   private showIOSInstructions() {
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("pwa-ios-instructions-show"));
+    }
+  }
+
+  private showAndroidInstructions() {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("pwa-android-instructions-show"));
     }
   }
 
