@@ -46,6 +46,7 @@ export class PWANotificationManager {
       e.preventDefault();
       this.installPrompt = e;
       this.canInstall = true;
+      console.log("PWA Manager: canInstall set to true");
 
       // Show notification immediately if not dismissed
       if (!this.notificationDismissed) {
