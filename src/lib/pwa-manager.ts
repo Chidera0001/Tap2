@@ -47,12 +47,10 @@ export class PWANotificationManager {
       this.installPrompt = e;
       this.canInstall = true;
 
-      // Show notification after a delay if not dismissed
+      // Show notification immediately if not dismissed
       if (!this.notificationDismissed) {
-        console.log("PWA Manager: Will show notification in 3 seconds");
-        setTimeout(() => {
-          this.showNotification();
-        }, 3000); // Show after 3 seconds
+        console.log("PWA Manager: Showing notification immediately");
+        this.showNotification();
       } else {
         console.log("PWA Manager: Notification was previously dismissed");
       }
@@ -109,7 +107,7 @@ export class PWANotificationManager {
       return;
     }
 
-    // Enhanced mobile detection
+    // Enhanced mobile detection for debugging
     const userAgent = navigator.userAgent;
     const isIOS = /iPad|iPhone|iPod/.test(userAgent);
     const isAndroid = /Android/.test(userAgent);
@@ -123,27 +121,8 @@ export class PWANotificationManager {
     console.log("- Is Mobile:", isMobile);
     console.log("- Is Standalone:", isInStandaloneMode);
 
-    // For iOS Safari, we can't use beforeinstallprompt
-    // Instead, we show a custom instruction
-    if (isIOS && !isInStandaloneMode && !this.notificationDismissed) {
-      console.log("PWA Manager: Will show iOS instructions in 5 seconds");
-      setTimeout(() => {
-        this.showIOSInstructions();
-      }, 5000); // Show after 5 seconds on iOS
-    }
-
-    // For Android Chrome, check if beforeinstallprompt is supported
-    if (isAndroid && !isInStandaloneMode) {
-      console.log("PWA Manager: Android detected, waiting for beforeinstallprompt");
-      
-      // Fallback: If no beforeinstallprompt after 10 seconds, show manual instructions
-      setTimeout(() => {
-        if (!this.canInstall && !this.notificationDismissed) {
-          console.log("PWA Manager: No beforeinstallprompt received, showing Android instructions");
-          this.showAndroidInstructions();
-        }
-      }, 10000);
-    }
+    // Note: We're relying on beforeinstallprompt for all devices now
+    // No custom instructions - let the browser handle it
   }
 
   private showNotification() {
@@ -164,12 +143,6 @@ export class PWANotificationManager {
   private showIOSInstructions() {
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("pwa-ios-instructions-show"));
-    }
-  }
-
-  private showAndroidInstructions() {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("pwa-android-instructions-show"));
     }
   }
 

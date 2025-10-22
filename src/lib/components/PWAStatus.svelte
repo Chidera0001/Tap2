@@ -4,7 +4,6 @@
   
   let showNotification = false;
   let showIOSInstructions = false;
-  let showAndroidInstructions = false;
   let isInstalled = false;
   let canInstall = false;
 
@@ -21,7 +20,6 @@
     window.addEventListener('pwa-notification-show', handleNotificationShow);
     window.addEventListener('pwa-notification-hide', handleNotificationHide);
     window.addEventListener('pwa-ios-instructions-show', handleIOSInstructionsShow);
-    window.addEventListener('pwa-android-instructions-show', handleAndroidInstructionsShow);
     
     // Check state periodically
     const interval = setInterval(updateState, 1000);
@@ -40,7 +38,6 @@
     window.removeEventListener('pwa-notification-show', handleNotificationShow);
     window.removeEventListener('pwa-notification-hide', handleNotificationHide);
     window.removeEventListener('pwa-ios-instructions-show', handleIOSInstructionsShow);
-    window.removeEventListener('pwa-android-instructions-show', handleAndroidInstructionsShow);
   });
 
   function updateState() {
@@ -66,10 +63,6 @@
     showIOSInstructions = true;
   }
 
-  function handleAndroidInstructionsShow() {
-    showAndroidInstructions = true;
-  }
-
   async function installPWA() {
     const success = await pwaManager.installPWA();
     if (success) {
@@ -87,11 +80,6 @@
 
   function dismissIOSInstructions() {
     showIOSInstructions = false;
-    pwaManager.dismissNotification();
-  }
-
-  function dismissAndroidInstructions() {
-    showAndroidInstructions = false;
     pwaManager.dismissNotification();
   }
 </script>
@@ -164,38 +152,8 @@
   </div>
 {/if}
 
-<!-- Android Install Instructions -->
-{#if showAndroidInstructions}
-  <div class="fixed top-0 left-0 right-0 bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg z-50 animate-slide-down" style="transform: translateZ(0);">
-    <div class="max-w-7xl mx-auto px-4 py-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="flex-shrink-0">
-            <img src="/logo/Logo-tap.png" alt="Tap2" class="h-10 w-10 rounded-lg bg-white/20 p-1" />
-          </div>
-          <div class="flex-1 min-w-0">
-            <h3 class="text-lg font-semibold text-white leading-tight">Install Tap2</h3>
-            <p class="text-sm text-white/90 mt-1">Tap the menu (⋮) and select "Add to Home Screen" or "Install App"</p>
-          </div>
-        </div>
-        <div class="flex items-center space-x-2 ml-4">
-          <button 
-            on:click={dismissAndroidInstructions}
-            class="text-white/80 hover:text-white transition-colors p-1 rounded"
-            aria-label="Dismiss instructions"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-{/if}
-
 <!-- Small Install Prompt (Fallback) -->
-{#if !isInstalled && canInstall && !showNotification && !showIOSInstructions && !showAndroidInstructions}
+{#if !isInstalled && canInstall && !showNotification && !showIOSInstructions}
   <div class="fixed bottom-4 right-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm">
     <div class="flex items-center space-x-3">
       <div class="flex-shrink-0">
