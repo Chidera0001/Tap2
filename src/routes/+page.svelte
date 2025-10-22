@@ -8,8 +8,8 @@
   import { api } from '$lib/convex-generated/api';
   
   // Accept SvelteKit props to prevent warnings
-  export let params: any;
-  export let data: any;
+  export const params = undefined;
+  export const data = undefined;
   
   // State
   let loyaltyCards: any[] = [];
@@ -56,9 +56,13 @@
       const cards = await convex.query(api.loyaltyCards.list);
       loyaltyCards = cards || [];
       isLoading = false;
+      
+      if (!cards || cards.length === 0) {
+        hasError = false; // Not an error, just empty
+      }
     } catch (error) {
       console.error('Error loading loyalty cards:', error);
-      loyaltyCards = fallbackData;
+      loyaltyCards = [];
       hasError = true;
       isLoading = false;
     }

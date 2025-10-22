@@ -6,8 +6,8 @@
   import PWAStatus from '$lib/components/PWAStatus.svelte';
   
   // Accept SvelteKit props to prevent warnings
-  export let params: any;
-  export let data: any;
+  export const params = undefined;
+  export const data = undefined;
   
   export const load = async () => {
     return {};

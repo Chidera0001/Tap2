@@ -44,12 +44,6 @@
   
   function applyFilters() {
     // In a real app, this would trigger data refetch
-    console.log('Applying filters:', { 
-      selectedBusiness, 
-      dateRange, 
-      customStartDate, 
-      customEndDate 
-    });
     handleClose();
   }
   
