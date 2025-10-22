@@ -21,11 +21,8 @@ export class PWANotificationManager {
   private initialize() {
     // Only initialize in browser environment
     if (typeof window === "undefined" || typeof localStorage === "undefined") {
-      console.log("PWA Manager: Not in browser environment");
       return;
     }
-
-    console.log("PWA Manager: Initializing...");
 
     // Check if notification was previously dismissed
     this.notificationDismissed =
@@ -33,27 +30,20 @@ export class PWANotificationManager {
 
     // Check if app is already installed as PWA
     this.isInstalled = this.checkIfInstalled();
-    console.log("PWA Manager: Is installed:", this.isInstalled);
 
     if (this.isInstalled) {
-      console.log("PWA Manager: Already installed, skipping notification");
       return; // Don't show notification if already installed
     }
 
     // Listen for install prompt
     window.addEventListener("beforeinstallprompt", (e) => {
-      console.log("PWA Manager: beforeinstallprompt event received");
       e.preventDefault();
       this.installPrompt = e;
       this.canInstall = true;
-      console.log("PWA Manager: canInstall set to true");
 
       // Show notification immediately if not dismissed
       if (!this.notificationDismissed) {
-        console.log("PWA Manager: Showing notification immediately");
         this.showNotification();
-      } else {
-        console.log("PWA Manager: Notification was previously dismissed");
       }
     });
 
@@ -68,24 +58,6 @@ export class PWANotificationManager {
 
     // Check for iOS Safari (different install flow)
     this.checkIOSInstallability();
-
-    // Add additional debugging
-    console.log("PWA Manager: Notification dismissed:", this.notificationDismissed);
-    console.log("PWA Manager: Can install:", this.canInstall);
-    console.log("PWA Manager: Install prompt available:", !!this.installPrompt);
-
-    // Check if we're in a PWA-capable environment
-    if ('serviceWorker' in navigator) {
-      console.log("PWA Manager: Service Worker supported");
-    } else {
-      console.log("PWA Manager: Service Worker NOT supported");
-    }
-
-    if ('beforeinstallprompt' in window) {
-      console.log("PWA Manager: beforeinstallprompt event supported");
-    } else {
-      console.log("PWA Manager: beforeinstallprompt event NOT supported");
-    }
   }
 
   private checkIfInstalled(): boolean {
@@ -115,16 +87,8 @@ export class PWANotificationManager {
     const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
     const isInStandaloneMode = (window.navigator as any).standalone === true;
 
-    console.log("PWA Manager: Mobile Detection:");
-    console.log("- User Agent:", userAgent);
-    console.log("- Is iOS:", isIOS);
-    console.log("- Is Android:", isAndroid);
-    console.log("- Is Mobile:", isMobile);
-    console.log("- Is Standalone:", isInStandaloneMode);
-
     // For iOS, show instructions since beforeinstallprompt is not supported
     if (isIOS && !isInStandaloneMode && !this.notificationDismissed) {
-      console.log("PWA Manager: iOS detected, showing install instructions");
       setTimeout(() => {
         this.showIOSInstructions();
       }, 2000); // Show after 2 seconds on iOS
@@ -132,11 +96,9 @@ export class PWANotificationManager {
   }
 
   private showNotification() {
-    console.log("PWA Manager: showNotification called");
     this.notificationShown = true;
     // Dispatch custom event for components to listen to
     if (typeof window !== "undefined") {
-      console.log("PWA Manager: Dispatching pwa-notification-show event");
       window.dispatchEvent(new CustomEvent("pwa-notification-show"));
     }
   }
@@ -156,10 +118,8 @@ export class PWANotificationManager {
 
   public async installPWA(): Promise<boolean> {
     if (this.installPrompt) {
-      console.log("PWA Manager: Calling installPrompt.prompt()");
       this.installPrompt.prompt();
       const { outcome } = await this.installPrompt.userChoice;
-      console.log("PWA Manager: Install outcome:", outcome);
 
       if (outcome === "accepted") {
         this.canInstall = false;
@@ -170,7 +130,6 @@ export class PWANotificationManager {
         return false;
       }
     } else {
-      console.log("PWA Manager: No install prompt available");
       return false;
     }
   }
@@ -195,8 +154,6 @@ export class PWANotificationManager {
     if (typeof localStorage !== "undefined") {
       localStorage.removeItem("pwa-notification-dismissed");
     }
-
-    console.log("PWA Manager: Notification reset - will show again");
   }
 
   // Getters
